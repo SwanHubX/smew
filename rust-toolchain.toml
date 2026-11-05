@@ -1,0 +1,4 @@
+[toolchain]
+# 固定编译器版本：clippy 收紧为 -D warnings 后，rustc 自动升级会引入新告警使 CI 意外变红；
+# 同时保证本地重建 dist 字节确定（升级 Rust = 改此处 + 改 workflow 版本号 + 重新生成 dist）
+channel = "1.97.1"

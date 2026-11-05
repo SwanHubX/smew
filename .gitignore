@@ -1,0 +1,5 @@
+/target
+/pkg
+
+# 宿主 monorepo 的根 .gitignore 会忽略 dist，这里重新收录预构建产物（独立仓库中本行为无害空操作）
+!dist/
