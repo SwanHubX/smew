@@ -1,0 +1,77 @@
+name: Test
+
+# smew 自持的 CI：push 到 main / feat/** 与 PR 都触发，改造期间每个提交都被测试守护
+on:
+  push:
+    branches:
+      - main
+      - feat/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ts-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '24.16.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --build tsconfig.json
+
+      # 声明产物（types/）必须与源码同步：重新生成后与已提交版本做 diff，漂移即失败
+      - name: Build declaration types
+        run: npm run build:types
+
+      - name: Verify declaration types are committed
+        run: |
+          git add -A types
+          git diff --cached --exit-code -- types
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+  rust-check:
+    name: Rust check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: '.'
+
+      - name: Format check
+        run: cargo fmt --check
+
+      - name: Clippy (wasm32 target)
+        run: cargo clippy --target wasm32-unknown-unknown --locked -- -D warnings
+
+      - name: Wasm build
+        run: cargo build --target wasm32-unknown-unknown --locked
+
+      - name: Unit tests
+        run: cargo test --locked
