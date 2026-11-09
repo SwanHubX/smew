@@ -1,19 +1,43 @@
 {
   "name": "smew",
   "version": "0.1.0",
-  "private": true,
+  "description": "Line chart smoothing library (TWE / RA / GS) with a Rust WASM implementation and an identical pure-TS fallback",
+  "keywords": [
+    "smoothing",
+    "chart",
+    "line-chart",
+    "wasm",
+    "rust",
+    "timeseries",
+    "visualization"
+  ],
+  "license": "MIT",
   "type": "module",
   "types": "./types/index.d.ts",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./index.ts"
+      "import": "./dist/index.js"
     }
+  },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwanHubX/smew.git"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "scripts": {
     "build": "tsup index.ts --format esm --external ./dist/wasm.js",
     "build:types": "tsc -p tsconfig.types.json",
     "build:wasm": "wasm-pack build --target web && node scripts/inline-wasm.mjs",
+    "prepublishOnly": "npm run build:wasm && npm run build:types && npm run build",
     "bench": "node bench/bench.ts",
     "lint": "eslint .",
     "test": "vitest run"
