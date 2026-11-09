@@ -11,6 +11,7 @@
     }
   },
   "scripts": {
+    "build": "tsup index.ts --format esm --external ./dist/wasm.js",
     "build:types": "tsc -p tsconfig.types.json",
     "build:wasm": "wasm-pack build --target web && node scripts/inline-wasm.mjs",
     "bench": "node bench/bench.ts",
@@ -24,6 +25,7 @@
     "eslint-plugin-jsdoc": "^63.0.2",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
+    "tsup": "^9.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"
