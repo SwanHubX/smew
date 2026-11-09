@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import rsInit, { gs as rsGs, ra as rsRa, twe as rsTwe } from '../dist/index.js'
+import rsInit, { gs as rsGs, ra as rsRa, twe as rsTwe } from '../dist/wasm.js'
 import { gs, ra, twe } from '../ts/smooth'
 import { datas, fixtures, toItems } from './fixtures'
 
-// TS ↔ RS 对拍：同一组 fixtures 分别喂给 TS 实现（../ts/smooth）与 RS 实现（dist/index.js），断言输出一致。
+// TS ↔ RS 对拍：同一组 fixtures 分别喂给 TS 实现（../ts/smooth）与 RS 实现（dist/wasm.js），断言输出一致。
 // 判定标准见 docs/agents/smew.md：
 // - TWE / RA：有限值 f64::to_bits() 完全一致，NaN 位置一致（不接受任何容差）
 // - GS：缺失点位置与 NaN 语义严格一致，有限值在约定容差内（exp 不强制正确舍入，位级不可证）

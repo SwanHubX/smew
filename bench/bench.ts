@@ -7,7 +7,7 @@
 
 import os from 'node:os'
 
-import rsInit, { gs as rsGs, ra as rsRa, twe as rsTwe } from '../dist/index.js'
+import rsInit, { gs as rsGs, ra as rsRa, twe as rsTwe } from '../dist/wasm.js'
 import { gs, ra, twe } from '../ts/smooth.ts'
 
 // ──类型与常量 ───────────────────────────────────────────────────────────────

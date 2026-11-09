@@ -105,7 +105,7 @@ const cancelled = await pending.catch(() => []) // 捕获中止，按需处理
 | **数值内核层**          | `src/utils/numeric.rs`                            | safeLerp / safeWeightRatio    | 共享数值原语（TS 正本镜像） |
 | **wasm-bindgen 导出层** | `src/lib.rs`                                      | `Float64Array → Float64Array` | JS 类型转换与绑定           |
 
-> 📌 `smew/dist/index.d.ts` 描述的是**导出层**，必须与实际导出一致。
+> 📌 `dist/wasm.d.ts` 描述的是**导出层**，必须与实际导出一致。
 
 ---
 
@@ -211,13 +211,13 @@ npm run build:wasm        # 在 smew 目录内执行；monorepo 中亦可用 npm
 > 📌 工具版本：`wasm-pack` 建议 **v0.15.0**（与 CI 及本仓库现有 dist 的生成环境一致；不同版本的胶水生成可能存在差异）
 
 链路：`wasm-pack build --target web` 编译（中间产物在 `pkg/`，不入库）→ `scripts/inline-wasm.mjs` 读取 `.wasm`
-字节转为十进制数字数组内嵌、并替换胶水中按路径加载的逻辑 → 产出单文件 `dist/index.js` + `dist/index.d.ts`。
+字节转为十进制数字数组内嵌、并替换胶水中按路径加载的逻辑 → 产出单文件 `dist/wasm.js` + `dist/wasm.d.ts`。
 
 - ✅ **`dist/`
   随源码提交入库**：其他开发者无需安装 Rust，拉取仓库即可直接使用（WASM 路径自动生效，加载失败自动回退 TS 实现）
 - 🚫 `pkg/`、`target/` 为编译中间产物，不入库（`.gitignore` 已覆盖）
 
-**修改 Rust 源码后**：重跑 `npm run build:wasm`，并将重新生成的 `dist/index.js`、`dist/index.d.ts` 随代码一起提交。
+**修改 Rust 源码后**：重跑 `npm run build:wasm`，并将重新生成的 `dist/wasm.js`、`dist/wasm.d.ts` 随代码一起提交。
 
 > 说明：脚本为防御式——pkg 产物与预期模式不符（如 wasm-bindgen 升级改变生成物结构）时直接报错退出，不会静默生成坏产物。
 > `Cargo.toml` 已设置 `wasm-opt = false` 规避 binaryen 的网络下载依赖，构建零网络要求。
