@@ -31,8 +31,7 @@ var twe = async (series, value, options) => {
     result.push({
       // 保留原始缺失点的位置，下一个有效点继续使用最近一次有效状态
       ...item,
-      data: isValidData(item.data) ? y : NaN,
-      origin: item.data
+      data: isValidData(item.data) ? y : NaN
     });
   }
   return result;
@@ -41,7 +40,7 @@ var ra = async (series, value, options) => {
   const result = [];
   const w = Math.floor(value / 2);
   if (!Number.isFinite(w)) {
-    return series.map((item) => ({ ...item, data: NaN, origin: item.data }));
+    return series.map((item) => ({ ...item, data: NaN }));
   }
   const half = Math.min(w, series.length);
   const checkpoint = options?.checkpoint;
@@ -60,8 +59,7 @@ var ra = async (series, value, options) => {
     result.push({
       // 当前点缺失时保持 NaN，窗口无有效样本时也无法计算平均值
       ...item,
-      data: !isValidData(item.data) || W === 0 ? NaN : mu,
-      origin: item.data
+      data: !isValidData(item.data) || W === 0 ? NaN : mu
     });
   }
   return result;
@@ -96,8 +94,7 @@ var gs = async (series, value, options) => {
     result.push({
       // 当前点缺失时保留 NaN，没有有效权重时避免产生无意义的除法结果
       ...item,
-      data: !isValidData(item.data) || W === 0 ? NaN : mu,
-      origin: item.data
+      data: !isValidData(item.data) || W === 0 ? NaN : mu
     });
   }
   return result;
@@ -113,7 +110,7 @@ function initWasm() {
     wasmInit = Promise.resolve();
     return wasmInit;
   }
-  wasmInit = import("./dist/wasm.js").then(async (wasm) => {
+  wasmInit = import("./wasm.js").then(async (wasm) => {
     await wasm.default();
     wasmModule = wasm;
   }).catch(() => {

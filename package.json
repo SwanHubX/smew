@@ -34,7 +34,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsup index.ts --format esm --external ./dist/wasm.js",
+    "build": "tsup",
     "build:types": "tsc -p tsconfig.types.json",
     "build:wasm": "wasm-pack build --target web && node scripts/inline-wasm.mjs",
     "prepublishOnly": "npm run build:wasm && npm run build:types && npm run build",
