@@ -3,7 +3,7 @@
 <h3 align="center">一个专为海量折线图打造的高性能平滑工具</h3>
 
 <p align="center">
-  <strong>零配置即装即用，WASM 带来 2–12 倍极速，数值不越界且绝不崩溃</strong>
+  <strong>零配置即装即用，WASM 带来 2–12 倍极速，NaN 与 Inf 极端输入稳定运行</strong>
 </p>
 
 <p align="center">

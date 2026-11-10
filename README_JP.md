@@ -3,7 +3,7 @@
 <h3 align="center">大量の折れ線グラフのための高性能スムージングツール</h3>
 
 <p align="center">
-  <strong>設定不要ですぐ使え、WASM で 2–12 倍高速、値は範囲を超えず例外も出しません</strong>
+  <strong>設定不要ですぐ使え、WASM で 2–12 倍高速、NaN と Inf の異常入力でも安定して動作します</strong>
 </p>
 
 <p align="center">

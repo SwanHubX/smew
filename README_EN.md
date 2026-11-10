@@ -3,7 +3,7 @@
 <h3 align="center">A high-performance smoothing tool built for massive line charts</h3>
 
 <p align="center">
-  <strong>Zero configuration, 2–12× faster with WASM, and values that never overshoot or crash</strong>
+  <strong>Zero configuration, 2–12× faster with WASM, stable on NaN and Inf inputs</strong>
 </p>
 
 <p align="center">
