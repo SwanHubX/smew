@@ -1,6 +1,10 @@
-# smew 🦆
+<h1 align="center">smew: A smooth-feathered duck 🦆</h1>
 
-**smew: A smooth-feathered duck | 一只羽毛顺滑的鸭子 🦆**
+<h3 align="center">A high-performance smoothing tool built for massive line charts</h3>
+
+<p align="center">
+  <strong>Zero configuration, 2–12× faster with WASM, and values that never overshoot or crash</strong>
+</p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/smew"><img src="https://img.shields.io/npm/v/smew?style=flat-square" alt="npm version"></a>
