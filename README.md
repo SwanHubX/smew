@@ -2,9 +2,15 @@
 
 **smew: A smooth-feathered duck | 一只羽毛顺滑的鸭子 🦆**
 
-[![npm version](https://img.shields.io/npm/v/smew?style=flat-square)](https://www.npmjs.com/package/smew)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/smew?style=flat-square)](https://bundlephobia.com/package/smew)
-[![license](https://img.shields.io/npm/l/smew?style=flat-square)](./LICENSE)
+<p align="center">
+  <a href="https://www.npmjs.com/package/smew"><img src="https://img.shields.io/npm/v/smew?style=flat-square" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/smew"><img src="https://img.shields.io/bundlephobia/minzip/smew?style=flat-square" alt="minzipped size"></a>
+  <a href="https://github.com/SwanHubX/smew/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/smew?style=flat-square" alt="license"></a>
+</p>
+
+<p align="center">
+  中文 / <a href="https://github.com/SwanHubX/smew/blob/main/README_EN.md">English</a> / <a href="https://github.com/SwanHubX/smew/blob/main/README_JP.md">日本語</a> / <a href="https://github.com/SwanHubX/smew/blob/main/README_RU.md">Русский</a>
+</p>
 
 ## 为什么是 smew？
 
