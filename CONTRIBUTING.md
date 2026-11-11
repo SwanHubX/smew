@@ -70,7 +70,7 @@ npm run build:wasm
 npm run build    # tsup 把 index.ts 编译成 dist/index.js（ESM）
 ```
 
-`tsup.config.ts` 的 `external: ['./dist/wasm.js']` 保证动态 import 原样保留，懒加载、失败回退、WebAssembly 守卫三条设计都依赖它。同一配置里的插件会把产物中的路径改写成 `./wasm.js`。源码在仓库根写作 `./dist/wasm.js`，产物在 `dist/` 内，视角不同。不要加 `--clean`，它会连同目录里的 wasm 产物一起删除。
+`tsup.config.ts` 的插件在 `onLoad` 里把源码的动态 import 从 `./dist/wasm.js` 改写成 `./wasm.js`：源码在仓库根，产物在 `dist/` 内，同一路径两个视角。`external` 必须写**改写后**的 `./wasm.js`，因为改写发生在 esbuild 解析之前，解析器只见过新说明符，写旧路径等于没配，动态 import 会被内联成 chunk。懒加载、失败回退、WebAssembly 守卫三条设计都依赖它原样保留。插件找不到 `./dist/wasm.js` 字面量会直接报错退出，源码改了导入写法时先同步这里。不要加 `--clean`，它会连同目录里的 wasm 产物一起删除。
 
 **类型声明**，改了 `index.ts` / `ts/**` 之后必须重跑：
 
