@@ -44,7 +44,7 @@ const embeddedBranch = `if (module_or_path === undefined) {
     }`
 const patchedGlue = glue.replace(urlBranch, embeddedBranch)
 
-// 3. 接口核对：导出签名与 README.md「导出函数」冻结契约不一致时此处报错，提醒同步下方 dist/wasm.d.ts 模板
+// 3. 接口核对：导出签名与冻结的导出层契约（docs/agents/smew.md）不一致时此处报错，提醒同步下方 dist/wasm.d.ts 模板
 const typeDecl = readFileSync(path.join(pkgDir, 'smew.d.ts'), 'utf8')
 for (const [fn, param] of [
   ['gs', 'sigma'],
