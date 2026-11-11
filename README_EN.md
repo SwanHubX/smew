@@ -26,7 +26,7 @@ Both screenshots come from real SwanLab charts:
 
 ![GS smoothing](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-gs.png)
 
-> GS: five sine curves, `σ = 4`
+> GS: fifteen sine curves, `σ = 4`
 
 smew is the line chart smoothing library behind SwanLab charts, with TWE / RA / GS built in. If you plot machine learning metrics, sensor readings or any frontend chart, you have probably run into these:
 
@@ -39,9 +39,9 @@ How smew solves it:
 
 - ⚡ **Fast**: Rust compiled to WASM, **2–12×** faster than plain JS on large series
 - 🛡️ **Automatic fallback**: an environment guard switches to the TS implementation when WASM is unavailable or fails to load. Output is identical and nothing throws
-- 📦 **Zero configuration**: WASM bytes are inlined in the bundle, about **25 kB** minzipped, installs and runs like any npm package, no bundler plugin or CDN
+- 📦 **Zero configuration**: WASM bytes are inlined in the bundle, the packed tarball is about **25 kB**, installs and runs like any npm package, no bundler plugin or CDN
 - 🧮 **Numerically stable**: a constant series comes back bit-for-bit identical, output never leaves the range of the data seen so far, and large values of opposite signs do not overflow the interpolation
-- 🎯 **Strict parity**: the algorithm contract is frozen and NaN positions propagate deterministically. Both implementations are diffed bit by bit: TWE / RA are bit-identical, GS matches within a published tolerance
+- 🎯 **Strict parity**: the algorithm contract is frozen and NaN positions propagate deterministically. Both implementations are diffed bit by bit: TWE / RA are bit-identical, GS matches within an absolute difference of 1e-12 or a relative difference of 1e-9
 
 ## Contents
 
