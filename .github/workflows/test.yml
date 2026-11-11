@@ -75,3 +75,57 @@ jobs:
 
       - name: Unit tests
         run: cargo test --locked
+
+  consumer-types:
+    name: Consumer types (node16)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '24.16.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 验的是发布形态：tarball 装进独立项目后，按 node16 解析声明
+      - name: Pack tarball
+        run: |
+          mkdir -p "$RUNNER_TEMP/pkg"
+          npm pack --pack-destination "$RUNNER_TEMP/pkg"
+
+      - name: Install tarball into a consumer project
+        run: |
+          mkdir -p "$RUNNER_TEMP/consumer"
+          cd "$RUNNER_TEMP/consumer"
+          printf '{"name":"consumer","private":true,"type":"module"}\n' > package.json
+          npm install "$RUNNER_TEMP"/pkg/smew-*.tgz --no-audit --no-fund --ignore-scripts --no-save
+
+      - name: Type-check consumer under node16
+        run: |
+          cat > "$RUNNER_TEMP/consumer/tsconfig.json" <<'JSON'
+          {
+            "compilerOptions": {
+              "module": "nodenext",
+              "moduleResolution": "nodenext",
+              "target": "es2022",
+              "strict": true,
+              "skipLibCheck": false,
+              "noEmit": true
+            },
+            "include": ["index.ts"]
+          }
+          JSON
+          cat > "$RUNNER_TEMP/consumer/index.ts" <<'TS'
+          import smew, { twe, type SmoothInput } from 'smew'
+
+          const series: SmoothInput[] = [{ data: 1 }, { data: 2 }]
+          export const out = await smew('TWE', series, { value: 0.5 })
+          export const direct = await twe(series, 0.5)
+          TS
+          npx tsc -p "$RUNNER_TEMP/consumer/tsconfig.json"

@@ -5,8 +5,8 @@
  * - TS 实现（./ts/smooth.ts）：纯 JS 回退，WASM 未就绪或加载失败时自动顶上
  * 输入只要求对象带 `data: number` 字段（缺失值以 NaN 表示），其余业务字段原样透传
  */
-import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth';
-export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth';
+import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth.js';
+export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth.js';
 /** smew 支持的平滑类型 */
 export type SmoothType = 'TWE' | 'RA' | 'GS';
 /** TWE 配置 */

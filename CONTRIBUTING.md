@@ -80,6 +80,8 @@ npm run build:types
 
 CI 会把重新生成的 `types/` 与已提交版本做 diff，漂移即失败。`package.json` 里 `types` 条件必须排在 `import` 之前，TS 按键顺序匹配，排在后面会被 `import` 抢走，退回源码解析。
 
+声明文件原样保留源码的导入路径，而 `node16` / `nodenext` 的消费者要求相对导入带扩展名，所以源码里的相对导入一律写成 `./ts/smooth.js`，TS 会自动解析到 `ts/smooth.ts`。同理，源码里不要用 `@/` 这类路径别名，别名只在本仓库的 tsconfig 有效，写进声明后消费者解析不了。CI 的 `consumer-types` 会把 tarball 装进独立的 `node16` 项目做类型检查，这类问题在仓库自检里看不见。
+
 `pkg/`、`target/` 是编译中间产物，不入库，`.gitignore` 已覆盖。产物同步 CI 验不了，因为依赖本机 wasm-pack 版本，只能靠人工契约：重建后 `git diff` 一下 dist 目录，无 diff 才算同步。
 
 ## 📝 文档与图片
