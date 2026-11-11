@@ -62,7 +62,7 @@ npm run build:wasm
 # → 产出 dist/wasm.js + dist/wasm.d.ts，与源码在同一提交内提交
 ```
 
-> 📌 `wasm-pack` 建议 v0.15.0，与 CI 及现有 dist 的生成环境一致，版本不同时胶水可能有差异。脚本本身是防御式的，wasm-bindgen 产物结构变了会直接报错退出，不会静默生成坏产物。`Cargo.toml` 已设 `wasm-opt = false`，构建零网络要求。
+> 📌 `wasm-pack` 建议 v0.15.0，现有 `dist/wasm.js` 就是这个版本生成的，版本不同胶水可能有差异。CI 只跑 cargo 检查，不重建胶水，产物同步只能本机验证。脚本本身是防御式的，wasm-bindgen 产物结构变了会直接报错退出，不会静默生成坏产物。`wasm-opt` 保持默认开启，首次构建会联网下载 wasm-bindgen 与 wasm-opt 到 wasm-pack 缓存目录（macOS 在 `~/Library/Caches/.wasm-pack`），之后离线可用。
 
 **npm 入口**：
 
@@ -101,4 +101,4 @@ CI 会把重新生成的 `types/` 与已提交版本做 diff，漂移即失败�
 
 ---
 
-期待你的 PR。
+期待你的 PR
