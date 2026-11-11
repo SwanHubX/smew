@@ -18,11 +18,11 @@
 
 ## Почему smew?
 
-Светлые линии это исходные данные, плотные линии это результат сглаживания. Оба скриншота сделаны в реальных графиках SwanLab.
+Оба скриншота сделаны в реальных графиках SwanLab.
 
 ![Сглаживание TWE](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-twe.png)
 
-> TWE: 4 кривые loss, `value = 0.2`
+> Светлые линии это исходные данные, плотные линии это результат сглаживания. TWE: 4 кривые loss, `value = 0.2`
 
 ![Сглаживание GS](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-gs.png)
 

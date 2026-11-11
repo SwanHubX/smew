@@ -18,11 +18,11 @@
 
 ## なぜ smew？
 
-薄い線が元データ、濃い線が平滑化した結果です。どちらも SwanLab の実際のグラフです。
+どちらも SwanLab の実際のグラフです。
 
 ![TWE の平滑化](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-twe.png)
 
-> TWE：loss カーブ 4 本、`value = 0.2`
+> 薄い線が元データ、濃い線が平滑化した結果です。TWE：loss カーブ 4 本、`value = 0.2`
 
 ![GS の平滑化](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-gs.png)
 

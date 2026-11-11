@@ -18,11 +18,11 @@
 
 ## Why smew?
 
-Light lines are raw data, solid lines are the smoothed result. Both screenshots come from real SwanLab charts:
+Both screenshots come from real SwanLab charts:
 
 ![TWE smoothing](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-twe.png)
 
-> TWE: four loss curves, `value = 0.2`
+> Light lines are raw data, solid lines are the smoothed result. TWE: four loss curves, `value = 0.2`
 
 ![GS smoothing](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-gs.png)
 

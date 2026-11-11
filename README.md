@@ -16,13 +16,13 @@
   中文 / <a href="https://github.com/SwanHubX/smew/blob/main/README_EN.md">English</a> / <a href="https://github.com/SwanHubX/smew/blob/main/README_JP.md">日本語</a> / <a href="https://github.com/SwanHubX/smew/blob/main/README_RU.md">Русский</a>
 </p>
 
-## 为什么是 smew？
+## 🦆 为什么是 smew？
 
-浅色为原始数据，实色为平滑结果，下面是 SwanLab 图表里的实际效果：
+下面是 SwanLab 图表里的实际效果：
 
 ![TWE 平滑效果](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-twe.png)
 
-> TWE：4 组 loss 曲线，参数 `0.2`
+> 浅色为原始数据，实色为平滑结果。TWE：4 组 loss 曲线，参数 `0.2`
 
 ![GS 平滑效果](https://raw.githubusercontent.com/SwanHubX/smew/main/readme_files/swanlab-gs.png)
 
@@ -45,14 +45,14 @@ smew 的解法：
 
 ## 📖 目录
 
-- [安装](#安装)
-- [快速上手](#快速上手)
-- [API](#api)
-- [行为契约](#行为契约)
-- [性能](#性能)
-- [边界与不做的事](#边界与不做的事)
-- [参与开发](#参与开发)
-- [协议](#协议)
+- [安装](#-安装)
+- [快速上手](#-快速上手)
+- [API](#-api)
+- [行为契约](#-行为契约)
+- [性能](#-性能)
+- [边界与不做的事](#-边界与不做的事)
+- [参与开发](#-参与开发)
+- [协议](#-协议)
 
 ## 📥 安装
 
