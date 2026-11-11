@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import rsInit, { gs as rsGs, ra as rsRa, twe as rsTwe } from '../dist/wasm.js'
+import smew from '../index'
 import { gs, ra, twe } from '../ts/smooth'
 import { datas, fixtures, toItems } from './fixtures'
 
@@ -142,5 +143,26 @@ describe('parity: TS 与 RS 实现一致性', () => {
       const out = await gs(toItems(fixtures.empty), 3)
       expect(rsGs(new Float64Array(0), 3)).toHaveLength(out.length)
     })
+  })
+})
+
+// ---------- 输出结构契约：入口（WASM 路径）与 TS 实现的键集合一致 ----------
+
+describe('输出键集合对拍', () => {
+  it('入口输出与 TS 实现的键集合一致', async () => {
+    // index.ts 在模块加载时后台初始化 WASM，宏任务等待确保初始化落地后 smew 稳定走 WASM 路径
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    const input = toItems(fixtures.normal)
+    const tsByType = { TWE: twe, RA: ra, GS: gs }
+    for (const [type, value] of [
+      ['TWE', 0.5],
+      ['RA', 4],
+      ['GS', 2]
+    ] as const) {
+      // TS 侧键集合已在 smooth.test.ts 锚死为输入键集合，这里保证入口（组装逻辑在 index.ts）不偏离
+      const viaEntry = await smew(type, input, { value })
+      const viaTs = await tsByType[type](input, value)
+      expect(viaEntry.map((item) => Object.keys(item).sort())).toEqual(viaTs.map((item) => Object.keys(item).sort()))
+    }
   })
 })
