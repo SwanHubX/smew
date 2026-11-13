@@ -30,6 +30,8 @@
     "type": "git",
     "url": "git+https://github.com/SwanHubX/smew.git"
   },
+  "homepage": "https://github.com/SwanHubX/smew#readme",
+  "bugs": "https://github.com/SwanHubX/smew/issues",
   "engines": {
     "node": ">=18"
   },
