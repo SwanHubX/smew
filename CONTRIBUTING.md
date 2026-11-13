@@ -90,6 +90,7 @@ CI 会把重新生成的 `types/` 与已提交版本做 diff，漂移即失败�
 - 正文少用中文括号与分号，能用逗号、句号说清就不用括号补充
 - 效果图放 `readme_files/`，直接用原始截图，不裁剪、不缩放、不压缩
 - README 里的图片写 `raw.githubusercontent.com` 绝对地址，npm 页面不解析相对路径
+- `README.md` 会随包发布到 npm 页面，站内链接（语言切换、LICENSE）一律写绝对 GitHub URL；`README_EN` / `README_JP` / `README_RU` 不进 tarball，只在 GitHub 阅读，用相对路径即可
 
 ## ✅ 提交 PR 之前
 

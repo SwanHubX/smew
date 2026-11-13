@@ -313,4 +313,4 @@ gs(series, value: number, options?): Promise<T[]>
 
 ## 📄 协议
 
-smew 以 [MIT License](./LICENSE) 开源
+smew 以 [MIT License](https://github.com/SwanHubX/smew/blob/main/LICENSE) 开源
