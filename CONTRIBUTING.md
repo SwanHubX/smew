@@ -9,7 +9,7 @@ npm 用户的安装与使用文档见 [README.md](./README.md)。工程规范的
 ```bash
 git clone git@github.com:SwanHubX/smew.git && cd smew
 npm install
-npm run test          # 69 个测试应全绿，包括 TS ↔ Rust 对拍
+npm run test          # 全部测试应全绿，包括 TS ↔ Rust 对拍
 ```
 
 日常最常用的三条：
