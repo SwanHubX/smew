@@ -3,7 +3,7 @@
  * 做三件事：
  * 1. 读取 pkg/smew_bg.wasm，转成十进制数字数组常量
  * 2. 对胶水 pkg/smew.js 做定点手术：把"按路径加载 .wasm"的默认分支替换为"使用内嵌字节"
- * 3. 输出 smew/dist/index.js（胶水 + 内嵌字节）与 smew/dist/index.d.ts
+ * 3. 输出 dist/wasm.js（胶水 + 内嵌字节）与 dist/wasm.d.ts
  * 运行：npm run build:wasm（smew 目录内执行）
  * 规则：防御式——pkg 产物与预期模式不符时立即报错退出，绝不静默生成坏产物
  */
@@ -44,7 +44,7 @@ const embeddedBranch = `if (module_or_path === undefined) {
     }`
 const patchedGlue = glue.replace(urlBranch, embeddedBranch)
 
-// 3. 接口核对：导出签名与 smew/README.md「导出函数」冻结契约不一致时此处报错，提醒同步下方 dist/index.d.ts 模板
+// 3. 接口核对：导出签名与冻结的导出层契约（docs/agents/smew.md）不一致时此处报错，提醒同步下方 dist/wasm.d.ts 模板
 const typeDecl = readFileSync(path.join(pkgDir, 'smew.d.ts'), 'utf8')
 for (const [fn, param] of [
   ['gs', 'sigma'],
@@ -53,11 +53,11 @@ for (const [fn, param] of [
 ]) {
   const pattern = new RegExp(`export function ${fn}\\(values: Float64Array, ${param}: number\\): Float64Array;`)
   if (!pattern.test(typeDecl)) {
-    fail(`pkg/smew.d.ts 中未找到预期的 ${fn} 签名，接口可能已变更，请同步更新本脚本中的 dist/index.d.ts 模板`)
+    fail(`pkg/smew.d.ts 中未找到预期的 ${fn} 签名，接口可能已变更，请同步更新本脚本中的 dist/wasm.d.ts 模板`)
   }
 }
 
-// 4. 组装 dist/index.js：内嵌字节前置段 + 手术后的胶水
+// 4. 组装 dist/wasm.js：内嵌字节前置段 + 手术后的胶水
 const indexJs = `/* 本文件由 scripts/inline-wasm.mjs 生成，请勿手改；重新生成：npm run build:wasm */
 
 // wasm 字节（十进制数字数组）
@@ -66,7 +66,7 @@ const WASM_BYTES = new Uint8Array([${wasmBytesCsv}])
 ${patchedGlue}
 `
 
-// 5. dist/index.d.ts 模板（与冻结的导出层接口一致；胶水里的 initSync 不对外承诺）
+// 5. dist/wasm.d.ts 模板（与冻结的导出层接口一致；胶水里的 initSync 不对外承诺）
 const indexDts = `/* 本文件由 smew/scripts/inline-wasm.mjs 生成，请勿手改 */
 
 /**
@@ -91,10 +91,10 @@ export default function init(): Promise<unknown>
 `
 
 mkdirSync(distDir, { recursive: true })
-writeFileSync(path.join(distDir, 'index.js'), indexJs)
-writeFileSync(path.join(distDir, 'index.d.ts'), indexDts)
+writeFileSync(path.join(distDir, 'wasm.js'), indexJs)
+writeFileSync(path.join(distDir, 'wasm.d.ts'), indexDts)
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`
 console.log(
-  `[smew] dist 生成完成：index.js ${kb(Buffer.byteLength(indexJs))}（wasm ${kb(wasmBytes.length)} → 数字数组）+ index.d.ts`
+  `[smew] dist 生成完成：wasm.js ${kb(Buffer.byteLength(indexJs))}（wasm ${kb(wasmBytes.length)} → 数字数组）+ wasm.d.ts`
 )

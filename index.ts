@@ -1,14 +1,15 @@
 /**
  * @description smew 公共入口 —— 对外只暴露这一份平滑 API
  * 内部包含两套实现，由本入口统一调度（调用方无需感知，也不应 import 内部文件）, 两套实现输出完全一致：
- * - WASM 实现（./dist/index.js，Rust 编译产物）：默认优先，速度更快
+ * - WASM 实现（./dist/wasm.js，Rust 编译产物）：默认优先，速度更快
  * - TS 实现（./ts/smooth.ts）：纯 JS 回退，WASM 未就绪或加载失败时自动顶上
  * 输入只要求对象带 `data: number` 字段（缺失值以 NaN 表示），其余业务字段原样透传
  */
-import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth'
-import * as tsImpl from './ts/smooth'
+// 相对导入统一带 .js：声明文件原样保留源码路径，node16 / nodenext 的消费者要求显式扩展名
+import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth.js'
+import * as tsImpl from './ts/smooth.js'
 
-export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth'
+export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth.js'
 
 /** smew 支持的平滑类型 */
 export type SmoothType = 'TWE' | 'RA' | 'GS'
@@ -41,7 +42,7 @@ export interface SmoothConfigMap {
 /** 按平滑类型取出对应配置类型 */
 export type SmoothConfig<K extends SmoothType> = SmoothConfigMap[K]
 
-/** WASM 模块的导出形态（dist/index.js） */
+/** WASM 模块的导出形态（dist/wasm.js） */
 interface WasmModule {
   default: () => Promise<unknown>
   twe: (values: Float64Array, smoothing: number) => Float64Array
@@ -62,8 +63,8 @@ function initWasm(): Promise<void> {
     wasmInit = Promise.resolve()
     return wasmInit
   }
-  // 产物已随仓库提交（dist/index.js，字节内嵌），静态路径让打包器正常解析并切出异步 chunk
-  wasmInit = import('./dist/index.js')
+  // 产物已随仓库提交（dist/wasm.js，字节内嵌），静态路径让打包器正常解析并切出异步 chunk
+  wasmInit = import('./dist/wasm.js')
     .then(async (wasm: WasmModule) => {
       await wasm.default()
       wasmModule = wasm

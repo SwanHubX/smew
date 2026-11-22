@@ -72,7 +72,7 @@ git checkout <原分支>
 
 | 变更路径或内容                                                              | 读取章节                                                                         |
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `src/lib.rs`、接口签名变更、`dist/index.d.ts`                               | 接口契约                                                                         |
+| `src/lib.rs`、接口签名变更、`dist/wasm.d.ts`                                | 接口契约                                                                         |
 | `index.ts` 公共入口与回退调度                                               | 接口契约 + 回退路径                                                              |
 | `src/{twe,ra,gs}.rs` 平滑算法实现                                           | 算法实现与一致性（有真实算法实现时）                                             |
 | `ts/**`（TS 回退实现）                                                      | 算法实现与一致性 + 横切规范                                                      |
@@ -105,8 +105,8 @@ npx tsc --build tsconfig.json
 npm run test
 ```
 
-涉及产物同步的 PR，还需确认 `dist/` 已随源码同 PR 更新（审核时可重跑 `npm run build:wasm` 并对 `dist/`
-做 `git diff --exit-code` 验证产物可复现：无 diff 即为源码与产物同步）。
+涉及产物同步的 PR，还需确认 `dist/` 已随源码同 PR 更新（审核时可重跑 `npm run build:wasm`；改了 `index.ts` /
+`tsup.config.ts` 的再加跑 `npm run build`，然后对 `dist/` 做 `git diff --exit-code` 验证产物可复现：无 diff 即为源码与产物同步）。
 
 CI 现状：由专用 workflow `.github/workflows/test.yml` 覆盖——TS 侧跑上述三项（vitest 含 parity 对拍，会加载 dist 并实例化）；
 Rust 侧 `rust-check` job 跑
@@ -117,8 +117,9 @@ Rust 侧 `rust-check` job 跑
 - TS 侧：CI 已覆盖；本地复核仍建议执行，Actions 未跑完或失败时以本地结果为准
 - Rust 侧：fmt / clippy（`-D warnings` 硬门禁）/
   wasm 完整构建 / 单元测试全部在 CI；本地复核仍建议执行，Actions 未跑完或失败时以本地结果为准
-- 产物同步：CI 不验证（本地重建依赖本机 wasm-pack 版本），由人工契约保证——修改 `.rs`
-  的 PR 必须同 PR 重建并提交 dist，审核时可本地重跑 `npm run build:wasm` 复核（无 diff 即同步）
+- 产物同步：CI 不验证（本地重建依赖本机 wasm-pack 版本），由人工契约保证——修改 `.rs` 或 `index.ts` / `tsup.config.ts`
+  的 PR 必须同 PR 重建并提交对应产物；审核时重跑 `npm run build:wasm`，改了 `index.ts` / `tsup.config.ts` 的加跑 `npm run build`，
+  然后 `git diff --exit-code -- dist`（无 diff 即同步）
 
 `cargo fmt --check` 与 `cargo clippy -- -D warnings`
 在 CI 中均为红绿门禁：本地复核失败时按阻塞级发现处理；确需豁免的告警统一走显式

@@ -1,18 +1,46 @@
 {
   "name": "smew",
   "version": "0.1.0",
-  "private": true,
+  "description": "Line chart smoothing library (TWE / RA / GS) with a Rust WASM implementation and an identical pure-TS fallback",
+  "keywords": [
+    "smoothing",
+    "chart",
+    "line-chart",
+    "wasm",
+    "rust",
+    "timeseries",
+    "visualization"
+  ],
+  "license": "MIT",
   "type": "module",
   "types": "./types/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./index.ts"
+      "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwanHubX/smew.git"
+  },
+  "homepage": "https://github.com/SwanHubX/smew#readme",
+  "bugs": "https://github.com/SwanHubX/smew/issues",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "build": "tsup",
     "build:types": "tsc -p tsconfig.types.json",
     "build:wasm": "wasm-pack build --target web && node scripts/inline-wasm.mjs",
+    "prepublishOnly": "npm run build:wasm && npm run build:types && npm run build",
     "bench": "node bench/bench.ts",
     "lint": "eslint .",
     "test": "vitest run"
@@ -24,6 +52,7 @@
     "eslint-plugin-jsdoc": "^63.0.2",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
+    "tsup": "^9.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"

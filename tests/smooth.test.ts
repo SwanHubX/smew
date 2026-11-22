@@ -371,3 +371,15 @@ describe('数值稳定性（safeLerp 凸组合内核）', () => {
     })
   })
 })
+
+// ---------- 输出结构契约（仅替换 data，不新增字段） ----------
+
+describe('输出键集合', () => {
+  it('三算法输出键集合与输入一致，不出现 origin', async () => {
+    const input = constantSeries(5, 6, 2)
+    for (const run of [() => twe(input, 0.5), () => ra(input, 4), () => gs(input, 2)]) {
+      // origin 曾随三处输出泄漏实现细节，锚死键集合防止它回流
+      expect((await run()).map((item) => Object.keys(item).sort())).toEqual(input.map(() => ['data', 'index']))
+    }
+  })
+})

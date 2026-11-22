@@ -33,4 +33,17 @@ describe('smew（统一入口）', () => {
   it('GS：按类型与配置分派', async () => {
     expectClose(datas(await smew('GS', series, { value: 1 })), datas(await gs(series, 1)))
   })
+
+  it('输出结构：仅 data 被替换，其余字段原样保留', async () => {
+    const input = toItems([10, 20, 30, 40])
+    const out = await smew('TWE', input, { value: 0.5 })
+    expect(out).toHaveLength(input.length)
+    out.forEach((item, index) => {
+      expect(item.index).toBe(input[index].index)
+      expect(item).not.toBe(input[index])
+      expect(item).not.toHaveProperty('origin')
+    })
+    // 输入不被修改
+    expect(input).toEqual(toItems([10, 20, 30, 40]))
+  })
 })

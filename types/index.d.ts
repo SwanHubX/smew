@@ -1,12 +1,12 @@
 /**
  * @description smew 公共入口 —— 对外只暴露这一份平滑 API
  * 内部包含两套实现，由本入口统一调度（调用方无需感知，也不应 import 内部文件）, 两套实现输出完全一致：
- * - WASM 实现（./dist/index.js，Rust 编译产物）：默认优先，速度更快
+ * - WASM 实现（./dist/wasm.js，Rust 编译产物）：默认优先，速度更快
  * - TS 实现（./ts/smooth.ts）：纯 JS 回退，WASM 未就绪或加载失败时自动顶上
  * 输入只要求对象带 `data: number` 字段（缺失值以 NaN 表示），其余业务字段原样透传
  */
-import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth';
-export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth';
+import type { Checkpoint, SmoothInput, SmoothOptions } from './ts/smooth.js';
+export type { Checkpoint, SmoothFunc, SmoothInput, SmoothOptions } from './ts/smooth.js';
 /** smew 支持的平滑类型 */
 export type SmoothType = 'TWE' | 'RA' | 'GS';
 /** TWE 配置 */

@@ -72,8 +72,7 @@ export const twe = async <T extends SmoothInput>(series: T[], value: number, opt
     result.push({
       // 保留原始缺失点的位置，下一个有效点继续使用最近一次有效状态
       ...item,
-      data: isValidData(item.data) ? y : NaN,
-      origin: item.data
+      data: isValidData(item.data) ? y : NaN
     })
   }
 
@@ -86,7 +85,7 @@ export const ra = async <T extends SmoothInput>(series: T[], value: number, opti
   const w = Math.floor(value / 2)
   // 非有限窗口（如 ±Infinity）无法构成有效循环区间，按非法参数直接输出全 NaN，避免宿主挂起
   if (!Number.isFinite(w)) {
-    return series.map((item) => ({ ...item, data: NaN, origin: item.data }))
+    return series.map((item) => ({ ...item, data: NaN }))
   }
   // 极大有限窗口按序列长度钳制：w ≥ 序列长度时窗口本就覆盖全序列，输出不变；
   // 同时规避浮点精度下 i++ 增量失效导致的循环挂起
@@ -111,8 +110,7 @@ export const ra = async <T extends SmoothInput>(series: T[], value: number, opti
     result.push({
       // 当前点缺失时保持 NaN，窗口无有效样本时也无法计算平均值
       ...item,
-      data: !isValidData(item.data) || W === 0 ? NaN : mu,
-      origin: item.data
+      data: !isValidData(item.data) || W === 0 ? NaN : mu
     })
   }
 
@@ -160,8 +158,7 @@ export const gs = async <T extends SmoothInput>(series: T[], value: number, opti
     result.push({
       // 当前点缺失时保留 NaN，没有有效权重时避免产生无意义的除法结果
       ...item,
-      data: !isValidData(item.data) || W === 0 ? NaN : mu,
-      origin: item.data
+      data: !isValidData(item.data) || W === 0 ? NaN : mu
     })
   }
 

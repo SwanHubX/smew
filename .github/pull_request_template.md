@@ -12,18 +12,15 @@ Closes #
 
 摘要：
 
-## 验收对照
+## 改动
+
+<按模块列出实际改了什么，3~6 条；不复述 diff>
+
+## 验收
+
+<逐条对应 issue 验收标准，每条附证据：命令与结果，或手工验证的场景>
 
 - [ ]
-
-## 验证
-
-- [ ] `cargo fmt --check`
-- [ ] `cargo clippy --target wasm32-unknown-unknown -- -D warnings`
-- [ ] `npx tsc --build tsconfig.json`
-- [ ] `npm run lint`
-- [ ] 相关测试
-- [ ] 手动验证（说明覆盖的场景）
 
 ## 风险
 
