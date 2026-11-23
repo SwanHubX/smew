@@ -64,6 +64,13 @@
 - TS 回退实现的行为保持与历史一致。
 - 不提供引擎切换的环境变量开关；如需要，先更新契约再实现。
 
+### 8. 发布
+
+- 发布由维护者推 `v*` 标签触发，`Publish` 工作流（`.github/workflows/release.yml`）在 Actions 里构建并 `npm publish`；不要本地 `npm publish`。
+- 标签必须与 `package.json` 的 `version` 一致，带不带 `v` 前缀都认，不一致工作流直接失败。
+- 标签打在 main 的合并提交上；GitHub Release 页面只写变更说明，不触发发布。
+- 认证走 npm 的 Trusted Publishing（OIDC），仓库不存 token；`.github/workflows/release.yml` 的文件名被 npm 侧绑定，改名会让发布失败。
+
 ## 验证命令
 
 Rust 侧在仓库根目录运行：

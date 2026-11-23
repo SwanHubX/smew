@@ -1,11 +1,11 @@
-name: Release
+name: Publish
 
-# 在 GitHub 上发布 Release 时发到 npm。认证走 OIDC 信任发布，npm 侧的 Trusted Publisher
+# 推 v* 标签时发到 npm。认证走 OIDC 信任发布，npm 侧的 Trusted Publisher
 # 绑定的是本文件名，改名会让发布直接失败
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: read
@@ -13,8 +13,6 @@ permissions:
 
 jobs:
   publish:
-    # 勾了预发布标签的 Release 不进正式版本
-    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -55,15 +53,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Release 的标签与 package.json 版本不一致时直接失败，避免把错误版本发出去
-      - name: Verify release tag matches package version
+      # 标签与 package.json 版本不一致时直接失败，避免把错误版本发出去
+      - name: Verify tag matches package version
         env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
+          TAG_NAME: ${{ github.ref_name }}
         run: |
           version="$(node -p "require('./package.json').version")"
           tag="${TAG_NAME#v}"
           if [ "$version" != "$tag" ]; then
-            echo "Release 标签 ${TAG_NAME} 与 package.json 的版本 ${version} 不一致" >&2
+            echo "标签 ${TAG_NAME} 与 package.json 的版本 ${version} 不一致" >&2
             exit 1
           fi
 
@@ -86,6 +84,6 @@ jobs:
       - name: Unit tests
         run: cargo test --locked
 
-      # prepublishOnly 会重建 wasm、声明与入口，tarball 内容来自当前 Release 指向的提交
+      # prepublishOnly 会重建 wasm、声明与入口，tarball 内容来自标签指向的提交
       - name: Publish to npm
         run: npm publish
