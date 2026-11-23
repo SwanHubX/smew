@@ -1,6 +1,6 @@
 {
   "name": "swanlab-smew",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Line chart smoothing library (TWE / RA / GS) with a Rust WASM implementation and an identical pure-TS fallback",
   "keywords": [
     "smoothing",

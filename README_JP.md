@@ -103,7 +103,7 @@ ESM のみのため `require` は失敗します。async 関数の中で動的�
 
 ```js
 async function main() {
-  const { default: smew } = await import('smew')
+  const { default: smew } = await import('swanlab-smew')
 
   const out = await smew('TWE', [{ data: 10 }, { data: 12 }], { value: 0.5 })
   console.log(out)

@@ -95,7 +95,7 @@ CI 会把重新生成的 `types/` 与已提交版本做 diff，漂移即失败�
 ## ✅ 提交 PR 之前
 
 - **commit 与分支名用英文**，遵循 conventional：feat / fix / refactor / perf / test / docs / ci / chore。PR 描述与评论用中文，细则在 `docs/agents/commit.md` 和 `docs/agents/pr.md`
-- 发布走 `prepublishOnly`，自动依次重建 build:wasm / build:types / build
+- 发布由维护者执行，PR 作者不需要打标签
 - PR 审核走 `review-smew` 命令，规则正文在 `docs/skills/pr-review-smew/SKILL.md`。先本地审查出草稿，确认后才提交到 GitHub
 - **合并需要仓库所有者确认**，CI 绿只是必要条件，不是合并授权
 - 硬约束摘要见根目录 [AGENTS.md](./AGENTS.md)，包括禁止 unsafe、不允许 panic 逃逸到 JS、热路径不做重复分配等，规则正文在 `docs/agents/smew.md`

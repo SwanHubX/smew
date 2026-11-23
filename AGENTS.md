@@ -4,7 +4,7 @@ smew 平滑算法库（Rust/WASM + TS 回退）。本文件是 agent 的入口�
 
 ## 项目定位
 
-折线图平滑算法库：TWE / RA / GS 三算法，Rust 编译 WASM 优先，纯 TS 回退，双实现对拍一致。发布为 npm 包 `smew`。
+折线图平滑算法库：TWE / RA / GS 三算法，Rust 编译 WASM 优先，纯 TS 回退，双实现对拍一致。发布为 npm 包 `swanlab-smew`。
 
 技术栈与版本以 `package.json` 与 `Cargo.toml` 为准。
 

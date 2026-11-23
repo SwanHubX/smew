@@ -1,0 +1,85 @@
+name: Publish
+
+# 推 v* 标签时发到 npm。认证走 OIDC 信任发布，npm 侧的 Trusted Publisher
+# 绑定的是本文件名，改名会让发布直接失败
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write # 用 OIDC 换短期发布令牌，仓库里不存任何 npm token
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '24.16.0'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.97.1
+        with:
+          targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: '.'
+
+      - name: Install wasm-pack
+        env:
+          WASM_PACK_SHA256: c09f971ecaed9a2efc80fdcea7a00ef6b53c7fadc8c57d1f61b53a6aa66b668a
+        run: |
+          curl -sSfL "https://github.com/wasm-bindgen/wasm-pack/releases/download/v0.15.0/wasm-pack-v0.15.0-x86_64-unknown-linux-musl.tar.gz" \
+            -o "$RUNNER_TEMP/wasm-pack.tar.gz"
+          echo "${WASM_PACK_SHA256}  ${RUNNER_TEMP}/wasm-pack.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/wasm-pack.tar.gz" -C "$RUNNER_TEMP"
+          sudo mv "$RUNNER_TEMP/wasm-pack-v0.15.0-x86_64-unknown-linux-musl/wasm-pack" /usr/local/bin/
+          wasm-pack --version
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 标签与 package.json 版本不一致时直接失败，避免把错误版本发出去
+      - name: Verify tag matches package version
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          tag="${TAG_NAME#v}"
+          if [ "$version" != "$tag" ]; then
+            echo "标签 ${TAG_NAME} 与 package.json 的版本 ${version} 不一致" >&2
+            exit 1
+          fi
+
+      # 先构建再测试：测试加载的是 dist/wasm.js，跳过这一步测的就是仓库里的旧产物
+      - name: Build artifacts
+        run: npm run prepublishOnly
+
+      - name: Run checks
+        run: |
+          npx tsc --build tsconfig.json
+          npm run lint
+          npm run test
+
+      # 发布是最后一道门：tag 可以指向未经 CI 的提交，这里按 test.yml 的同一套标准复核 Rust
+      - name: Rust checks
+        run: |
+          cargo fmt --check
+          cargo clippy --target wasm32-unknown-unknown --locked -- -D warnings
+          cargo test --locked
+
+      # 产物已在前面构建并测过，这里跳过 prepublishOnly，保证发布的就是刚测过的那一份
+      - name: Publish to npm
+        run: npm publish --ignore-scripts
