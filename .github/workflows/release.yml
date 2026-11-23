@@ -40,11 +40,15 @@ jobs:
         with:
           workspaces: '.'
 
-      # wasm-pack 版本决定 wasm-opt 的下载版本，与本地保持一致才能产出同样的 wasm
+      # 版本影响 wasm-opt 的下载版本；这是唯一直接执行的外部二进制，故校验 SHA256
       - name: Install wasm-pack
+        env:
+          WASM_PACK_SHA256: c09f971ecaed9a2efc80fdcea7a00ef6b53c7fadc8c57d1f61b53a6aa66b668a
         run: |
           curl -sSfL "https://github.com/wasm-bindgen/wasm-pack/releases/download/v0.15.0/wasm-pack-v0.15.0-x86_64-unknown-linux-musl.tar.gz" \
-            | tar -xz -C "$RUNNER_TEMP"
+            -o "$RUNNER_TEMP/wasm-pack.tar.gz"
+          echo "${WASM_PACK_SHA256}  ${RUNNER_TEMP}/wasm-pack.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/wasm-pack.tar.gz" -C "$RUNNER_TEMP"
           sudo mv "$RUNNER_TEMP/wasm-pack-v0.15.0-x86_64-unknown-linux-musl/wasm-pack" /usr/local/bin/
           wasm-pack --version
 
