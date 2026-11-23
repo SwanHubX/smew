@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/smew"><img src="https://img.shields.io/npm/v/smew?style=flat-square" alt="npm version"></a>
-  <a href="https://bundlephobia.com/package/smew"><img src="https://img.shields.io/bundlephobia/minzip/smew?style=flat-square" alt="minzipped size"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/smew?style=flat-square" alt="license"></a>
+  <a href="https://www.npmjs.com/package/swanlab-smew"><img src="https://img.shields.io/npm/v/swanlab-smew?style=flat-square" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/swanlab-smew"><img src="https://img.shields.io/bundlephobia/minzip/swanlab-smew?style=flat-square" alt="minzipped size"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/swanlab-smew?style=flat-square" alt="license"></a>
 </p>
 
 <p align="center">
@@ -57,7 +57,7 @@ smew это библиотека сглаживания линейных гра�
 ## Установка
 
 ```bash
-npm install smew
+npm install swanlab-smew
 ```
 
 Нужен Node.js >= 18 или современный браузер с ESM и WebAssembly. Пакет существует только в формате ESM. Для проектов на CommonJS смотрите динамический импорт в разделе «Быстрый старт».
@@ -84,7 +84,7 @@ smew(type, series, config, checkpoint?)
 Импортируйте экспорт по умолчанию напрямую:
 
 ```ts
-import smew from 'smew'
+import smew from 'swanlab-smew'
 
 const input = [
   { data: 10, index: 0 },
@@ -144,7 +144,7 @@ const out = await smew(
 `smew` это экспорт по умолчанию. Каждый алгоритм также доступен как именованный экспорт из того же пакета и даёт тот же результат:
 
 ```ts
-import { twe, ra, gs } from 'smew'
+import { twe, ra, gs } from 'swanlab-smew'
 
 const series = [{ data: 10 }, { data: 12 }, { data: 9 }]
 
@@ -177,7 +177,7 @@ smew('TWE', series, { value: 0.5 })
 Передавайте его четвёртым аргументом единой точки входа или как `options.checkpoint` у именованного экспорта. Сигнатура `(index: number) => void | Promise<void>`, вызывается перед обработкой каждой точки и ожидается. Выброшенное исключение прерывает вычисление и пробрасывается наружу.
 
 ```ts
-import smew from 'smew'
+import smew from 'swanlab-smew'
 
 const input = [{ data: 10 }, { data: 12 }, { data: 9 }]
 
