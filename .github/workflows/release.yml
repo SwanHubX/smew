@@ -33,6 +33,7 @@ jobs:
         uses: dtolnay/rust-toolchain@1.97.1
         with:
           targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
 
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
@@ -70,6 +71,16 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      # 发布是最后一道门：tag 可以指向未经 CI 的提交，这里按 test.yml 的同一套标准复核 Rust
+      - name: Format check
+        run: cargo fmt --check
+
+      - name: Clippy (wasm32 target)
+        run: cargo clippy --target wasm32-unknown-unknown --locked -- -D warnings
+
+      - name: Unit tests
+        run: cargo test --locked
 
       # prepublishOnly 会重建 wasm、声明与入口，tarball 内容来自当前 Release 指向的提交
       - name: Publish to npm
