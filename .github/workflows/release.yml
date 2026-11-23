@@ -20,7 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 发布构建不复用依赖缓存，避免旧产物混进 tarball
       - name: Set up Node.js
         uses: actions/setup-node@v4.1.0
         with:
