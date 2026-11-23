@@ -37,7 +37,6 @@ jobs:
         with:
           workspaces: '.'
 
-      # 版本影响 wasm-opt 的下载版本；这是唯一直接执行的外部二进制，故校验 SHA256
       - name: Install wasm-pack
         env:
           WASM_PACK_SHA256: c09f971ecaed9a2efc80fdcea7a00ef6b53c7fadc8c57d1f61b53a6aa66b668a
