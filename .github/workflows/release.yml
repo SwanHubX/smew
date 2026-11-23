@@ -69,24 +69,18 @@ jobs:
       - name: Build artifacts
         run: npm run prepublishOnly
 
-      - name: Type-check
-        run: npx tsc --build tsconfig.json
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Run tests
-        run: npm run test
+      - name: Run checks
+        run: |
+          npx tsc --build tsconfig.json
+          npm run lint
+          npm run test
 
       # 发布是最后一道门：tag 可以指向未经 CI 的提交，这里按 test.yml 的同一套标准复核 Rust
-      - name: Format check
-        run: cargo fmt --check
-
-      - name: Clippy (wasm32 target)
-        run: cargo clippy --target wasm32-unknown-unknown --locked -- -D warnings
-
-      - name: Unit tests
-        run: cargo test --locked
+      - name: Rust checks
+        run: |
+          cargo fmt --check
+          cargo clippy --target wasm32-unknown-unknown --locked -- -D warnings
+          cargo test --locked
 
       # 产物已在前面构建并测过，这里跳过 prepublishOnly，保证发布的就是刚测过的那一份
       - name: Publish to npm
