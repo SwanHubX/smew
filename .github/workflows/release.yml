@@ -65,6 +65,10 @@ jobs:
             exit 1
           fi
 
+      # 先构建再测试：测试加载的是 dist/wasm.js，跳过这一步测的就是仓库里的旧产物
+      - name: Build artifacts
+        run: npm run prepublishOnly
+
       - name: Type-check
         run: npx tsc --build tsconfig.json
 
@@ -84,6 +88,6 @@ jobs:
       - name: Unit tests
         run: cargo test --locked
 
-      # prepublishOnly 会重建 wasm、声明与入口，tarball 内容来自标签指向的提交
+      # 产物已在前面构建并测过，这里跳过 prepublishOnly，保证发布的就是刚测过的那一份
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --ignore-scripts
