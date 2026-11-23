@@ -104,7 +104,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/consumer"
           cd "$RUNNER_TEMP/consumer"
           printf '{"name":"consumer","private":true,"type":"module"}\n' > package.json
-          npm install "$RUNNER_TEMP"/pkg/smew-*.tgz --no-audit --no-fund --ignore-scripts --no-save
+          npm install "$RUNNER_TEMP"/pkg/swanlab-smew-*.tgz --no-audit --no-fund --ignore-scripts --no-save
 
       - name: Type-check consumer under node16
         run: |
@@ -122,7 +122,7 @@ jobs:
           }
           JSON
           cat > "$RUNNER_TEMP/consumer/index.ts" <<'TS'
-          import smew, { twe, type SmoothInput } from 'smew'
+          import smew, { twe, type SmoothInput } from 'swanlab-smew'
 
           const series: SmoothInput[] = [{ data: 1 }, { data: 2 }]
           export const out = await smew('TWE', series, { value: 0.5 })

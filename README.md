@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/smew"><img src="https://img.shields.io/npm/v/smew?style=flat-square" alt="npm version"></a>
-  <a href="https://bundlephobia.com/package/smew"><img src="https://img.shields.io/bundlephobia/minzip/smew?style=flat-square" alt="minzipped size"></a>
-  <a href="https://github.com/SwanHubX/smew/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/smew?style=flat-square" alt="license"></a>
+  <a href="https://www.npmjs.com/package/swanlab-smew"><img src="https://img.shields.io/npm/v/swanlab-smew?style=flat-square" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/swanlab-smew"><img src="https://img.shields.io/bundlephobia/minzip/swanlab-smew?style=flat-square" alt="minzipped size"></a>
+  <a href="https://github.com/SwanHubX/smew/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/swanlab-smew?style=flat-square" alt="license"></a>
 </p>
 
 <p align="center">
@@ -57,7 +57,7 @@ smew 的解法：
 ## 📥 安装
 
 ```bash
-npm install smew
+npm install swanlab-smew
 ```
 
 环境要求：Node.js >= 18，或支持 ESM 与 WebAssembly 的现代浏览器。包只提供 ESM，CommonJS 项目的导入方式见快速上手。
@@ -84,7 +84,7 @@ smew(type, series, config, checkpoint?)
 直接 `import` 默认导出：
 
 ```ts
-import smew from 'smew'
+import smew from 'swanlab-smew'
 
 const input = [
   { data: 10, index: 0 },
@@ -144,7 +144,7 @@ const out = await smew(
 `smew` 是默认导出。三个算法另有命名导出，装的是同一个包，效果也与统一入口相同：
 
 ```ts
-import { twe, ra, gs } from 'smew'
+import { twe, ra, gs } from 'swanlab-smew'
 
 const series = [{ data: 10 }, { data: 12 }, { data: 9 }]
 
@@ -176,7 +176,7 @@ WASM 需要异步初始化，因此所有 API 返回 `Promise`。初始化在模
 传法：统一入口的第四个参数，或命名导出的 `options.checkpoint`，签名为 `(index: number) => void | Promise<void>`，在每个数据点处理前调用并等待。抛出异常会中止计算并向上抛出。
 
 ```ts
-import smew from 'smew'
+import smew from 'swanlab-smew'
 
 const input = [{ data: 10 }, { data: 12 }, { data: 9 }]
 
